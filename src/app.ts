@@ -1,20 +1,26 @@
 import express from "express";
-import morgan from "morgan";
 import * as trpcExpress from "@trpc/server/adapters/express";
+import morgan from "morgan";
+import cors from "cors";
 
-import { router, createContext } from "./trcp";
+import { notesRouter } from "./routes/note";
+import { router, createContext } from "./trpc";
 
 const app = express();
-const appRouter = router({});
+
+const appRouter = router({
+  note: notesRouter,
+});
 
 app.use(morgan("dev"));
+app.use(cors());
 app.use(
   "/trpc",
   trpcExpress.createExpressMiddleware({
-    // rutas que se pueden consultar
     router: appRouter,
-    createContext: createContext,
+    createContext,
   })
 );
 
+export type AppRouter = typeof appRouter;
 export default app;
