@@ -14,7 +14,7 @@ class Note {
   @prop({ type: String })
   description: string;
 
-  @prop({ type: Boolean })
+  @prop({ type: Boolean, default: false })
   done: boolean;
 }
 

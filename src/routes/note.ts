@@ -21,7 +21,35 @@ const createNote = publicProcedure
     return savedNote;
   });
 
+const deleteNote = publicProcedure
+  .input(z.string())
+  .mutation(async ({ input }) => {
+    // throw new Error("Custom error");
+    const noteFound = await NoteModel.findByIdAndDelete(input);
+
+    if (!noteFound) throw new Error("Note Not Found");
+
+    return true;
+  });
+
+const toggleDone = publicProcedure
+  .input(z.string())
+  .mutation(async ({ input }) => {
+    try {
+      const foundNote = await NoteModel.findById(input);
+      if (!foundNote) throw new Error("Note Not Found!");
+      foundNote.done = !foundNote.done;
+      await foundNote.save();
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  });
+
 export const notesRouter = router({
   get: getNotes,
   create: createNote,
+  delete: deleteNote,
+  toggleDone,
 });
