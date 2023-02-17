@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
+import { MONGODB_URI } from "./config";
+
 export const dbConncet = async () => {
   try {
     mongoose.set("strictQuery", false); // resuleve un error de mongoose
-    const db = await mongoose.connect(
-      "mongodb+srv://hahs:TravelMate@cluster0.tmnqqvn.mongodb.net/trpc?retryWrites=true&w=majority"
-    );
+    const db = await mongoose.connect(MONGODB_URI);
 
     console.log(`Database is connected to: ${db.connection.db.databaseName} `);
   } catch (error) {
